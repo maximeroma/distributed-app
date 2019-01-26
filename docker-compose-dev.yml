@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile-dev
     ports:
       - 5001:5000
+    restart: always
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=project.config.DevelopmentConfig
@@ -19,6 +20,8 @@ services:
     build:
       context: ./services/users/project/db
       dockerfile: Dockerfile
+    expose:
+    - '5432'
     ports:
       - 5435:5432
     environment:
