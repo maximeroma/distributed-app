@@ -16,6 +16,7 @@ before_install:
 
 before_script:
   - docker-compose -f docker-compose-dev.yml up -d --build
+  - sleep 5
 
 script:
   - docker-compose -f docker-compose-dev.yml exec users python manage.py recreate-db

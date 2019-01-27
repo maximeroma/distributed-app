@@ -8,7 +8,4 @@ done
 
 echo "PostgreSQL started"
 
-
-sleep 10
-
 python manage.py run -h 0.0.0.0
