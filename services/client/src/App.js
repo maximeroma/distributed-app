@@ -1,22 +1,31 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { getUsers } from "./services/users";
 
-const App = () => {
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-one-third">
-            <br />
-            <div className="title is-1 is-1">All Users</div>
-            <hr />
-            <br />
+class App extends Component {
+  static defaultProps = { getUsers };
+
+  componentDidMount() {
+    getUsers();
+  }
+
+  render() {
+    return (
+      <section className="section">
+        <div className="container">
+          <div className="columns">
+            <div className="column is-one-third">
+              <br />
+              <div className="title is-1 is-1">All Users</div>
+              <hr />
+              <br />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
+    );
+  }
+}
 
 export default App;
