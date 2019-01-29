@@ -22,13 +22,14 @@ class App extends Component {
             <div className="column is-one-third">
               <br />
               <div className="title is-1 is-1">All Users</div>
-              {this.state.users.map(user => {
-                return (
-                  <h4 key={user.id} className="box title is-4">
-                    {user.username}
-                  </h4>
-                )
-              })}
+              {Array.isArray(this.state.users) &&
+                this.state.users.map(user => {
+                  return (
+                    <h4 key={user.id} className="box title is-4">
+                      {user.username}
+                    </h4>
+                  )
+                })}
               <hr />
               <br />
             </div>
