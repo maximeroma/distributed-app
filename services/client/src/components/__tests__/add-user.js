@@ -25,7 +25,7 @@ test("i can see user form correctly", () => {
   expect(getByLabelText(/email/i)).toBeInTheDocument()
 })
 
-test("i can see user form correctly", async () => {
+test("i can handle form correctly", async () => {
   const {getByLabelText, getByText, debug} = render(<App />)
 
   fireEvent.change(getByLabelText(/username/i), {target: {value: "maxime"}})
@@ -33,9 +33,14 @@ test("i can see user form correctly", async () => {
     target: {value: "roma@gmail.com"}
   })
 
+  expect(getByText(/submit/i)).not.toBeDisabled()
+
   fireEvent.submit(getByText(/submit/i))
 
+  expect(getByText(/submit/i)).toBeDisabled()
   await flushPromises()
   expect(addUser).toHaveBeenCalled()
   expect(addUser.mock.calls[0][0]).toMatchSnapshot()
+  expect(getByLabelText(/username/i).value).toEqual("")
+  expect(getByLabelText(/email/i).value).toEqual("")
 })

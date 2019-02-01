@@ -12,7 +12,7 @@ const AddUser = ({addUser, isMounted, ...rest}) => (
       })
     }}
   >
-    {({handleSubmit}) => (
+    {({handleSubmit, isValidating, isSubmitting}) => (
       <form onSubmit={handleSubmit}>
         <div className="field">
           <Field
@@ -34,6 +34,7 @@ const AddUser = ({addUser, isMounted, ...rest}) => (
         <button
           className="button is-primary is-large is-fullwidth"
           type="submit"
+          disabled={isValidating || isSubmitting}
         >
           Submit
         </button>
