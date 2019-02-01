@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`i can see user form correctly 1`] = `
+Object {
+  "email": "roma@gmail.com",
+  "username": "maxime",
+}
+`;
