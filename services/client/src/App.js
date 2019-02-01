@@ -1,16 +1,29 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
+import React, {Component} from "react"
 import "./App.css"
-import { getUsers } from "./services/users"
+import {getUsers, addUser} from "./services/users"
+import AddUser from "./components/add-user"
 
 class App extends Component {
-  static defaultProps = { getUsers }
+  static defaultProps = {getUsers, addUser}
 
-  state = { users: [] }
+  state = {users: []}
 
   componentDidMount() {
+    this.getUsers()
+  }
+
+  getUsers = () => {
+    const {getUsers} = this.props
     getUsers()
-      .then(users => this.setState({ users: users.data.data.users }))
+      .then(users => this.setState({users: users.data.data.users}))
+      .catch(err => console.log(err))
+  }
+
+  addUser = ({username = "", email = ""}) => {
+    return addUser({username, email})
+      .then(res => {
+        this.getUsers()
+      })
       .catch(err => console.log(err))
   }
 
@@ -20,6 +33,8 @@ class App extends Component {
         <div className="container">
           <div className="columns">
             <div className="column is-one-third">
+              <br />
+              <AddUser addUser={this.addUser} />
               <br />
               <div className="title is-1 is-1">All Users</div>
               {Array.isArray(this.state.users) &&
