@@ -1,7 +1,7 @@
 import React from "react"
-import { render, wait } from "react-testing-library/dist"
+import {render, wait} from "react-testing-library/dist"
 import App from "../App"
-import { getUsers } from "../services/users"
+import {getUsers} from "../services/users"
 
 jest.mock("../services/users", () => ({
   getUsers: jest.fn(() =>
@@ -30,12 +30,10 @@ const users = [
   }
 ]
 
-getUsers.mockImplementation(() =>
-  Promise.resolve({ data: { data: { users } } })
-)
+getUsers.mockImplementation(() => Promise.resolve({data: {data: {users}}}))
 
 test("it renders users", async () => {
-  const { getByText } = render(<App />)
+  const {getByText} = render(<App />)
   await wait()
   expect(getByText(/michaelherman/i)).toBeInTheDocument()
   expect(getByText(/michael/i)).toBeInTheDocument()

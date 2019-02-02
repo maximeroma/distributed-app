@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`i can handle form correctly 1`] = `
-Object {
-  "email": "roma@gmail.com",
-  "username": "maxime",
-}
-`;

@@ -28,7 +28,9 @@ test("i can see user form correctly", () => {
 test("i can handle form correctly", async () => {
   const {getByLabelText, getByText, debug} = render(<App />)
 
-  fireEvent.change(getByLabelText(/username/i), {target: {value: "maxime"}})
+  fireEvent.change(getByLabelText(/username/i), {
+    target: {value: "maxime"}
+  })
   fireEvent.change(getByLabelText(/email/i), {
     target: {value: "roma@gmail.com"}
   })
@@ -40,7 +42,12 @@ test("i can handle form correctly", async () => {
   expect(getByText(/submit/i)).toBeDisabled()
   await flushPromises()
   expect(addUser).toHaveBeenCalled()
-  expect(addUser.mock.calls[0][0]).toMatchSnapshot()
+  expect(addUser.mock.calls[0][0]).toMatchInlineSnapshot(`
+Object {
+  "email": "roma@gmail.com",
+  "username": "maxime",
+}
+`)
   expect(getByLabelText(/username/i).value).toEqual("")
   expect(getByLabelText(/email/i).value).toEqual("")
 })
