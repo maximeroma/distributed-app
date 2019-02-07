@@ -57,7 +57,10 @@ class TestUserService(BaseTestCase):
         with self.client:
             response = self.client.post(
                 '/users',
-                data=json.dumps(dict({'email': 'michael@mherman.org', 'password': 'test1'})),
+                data=json.dumps(dict({
+                    'email': 'michael@mherman.org',
+                    'password': 'test1'
+                })),
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
@@ -139,8 +142,16 @@ class TestUserService(BaseTestCase):
             self.assertIn('fail', data['status'])
 
     def test_all_users(self):
-        add_user(username='michael', email='michael@mherman.org', password='test1')
-        add_user(username='fletcher', email='fletcher@notreal.com', password='test2')
+        add_user(
+            username='michael',
+            email='michael@mherman.org',
+            password='test1'
+        )
+        add_user(
+            username='fletcher',
+            email='fletcher@notreal.com',
+            password='test2'
+        )
 
         with self.client:
             response = self.client.get('/users')
