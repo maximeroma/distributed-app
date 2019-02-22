@@ -36,6 +36,8 @@ def add_user():
         'message': 'Invalid payload.'
     }
 
+    print(post_data)
+
     if not post_data:
         return jsonify(response_object), 400
 
