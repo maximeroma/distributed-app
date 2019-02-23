@@ -44,6 +44,8 @@ services:
     build:
       context: ./services/client
       dockerfile: Dockerfile-dev
+      args:
+        - NODE_PATH=src/
     volumes:
       - './services/client:/usr/src/app'
       - '/usr/src/app/node_modules'

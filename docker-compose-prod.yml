@@ -42,6 +42,7 @@ services:
       args:
         - NODE_ENV=production
         - REACT_APP_USERS_SERVICE=${REACT_APP_USERS_SERVICE_URL}
+        - NODE_PATH=src/
     ports:
       - '3007:80'
     depends_on:
