@@ -1,18 +1,10 @@
 import React from "react"
-import {render, wait} from "react-testing-library/dist"
-import App from "../App"
-import {getUsers} from "../services/users"
+import {render, wait} from "react-testing-library"
+import App from "App"
+import axios from "axios"
 
-jest.mock("../services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
+jest.mock("axios", () => ({
+  get: jest.fn(() => Promise.resolve({data: {data: {users: []}}}))
 }))
 
 const users = [
@@ -30,7 +22,7 @@ const users = [
   }
 ]
 
-getUsers.mockImplementation(() => Promise.resolve({data: {data: {users}}}))
+axios.get.mockImplementation(() => Promise.resolve({data: {data: {users}}}))
 
 test("it renders users", async () => {
   const {getByText} = render(<App />)

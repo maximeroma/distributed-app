@@ -3,16 +3,8 @@ import {Router, navigate} from "@reach/router"
 import {render} from "react-testing-library"
 import App from "App"
 
-jest.mock("services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
+jest.mock("axios", () => ({
+  get: jest.fn(() => Promise.resolve({data: {data: {users: []}}}))
 }))
 
 test("by default i am on the home page", async () => {

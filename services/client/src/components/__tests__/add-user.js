@@ -1,19 +1,10 @@
 import React from "react"
 import {render, fireEvent, wait} from "react-testing-library"
 import App from "../../App"
-import {addUser, getUsers} from "../../services/users"
 
-jest.mock("../../services/users", () => ({
-  addUser: jest.fn(data => Promise.resolve({data})),
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
+jest.mock("axios", () => ({
+  get: jest.fn(() => Promise.resolve({data: {data: {users: []}}})),
+  post: jest.fn((url, values) => Promise.resolve({data}))
 }))
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
@@ -41,8 +32,8 @@ test("i can handle form correctly", async () => {
 
   expect(getByText(/submit/i)).toBeDisabled()
   await flushPromises()
-  expect(addUser).toHaveBeenCalled()
-  expect(addUser.mock.calls[0][0]).toMatchInlineSnapshot(`
+  expect(axios.post).toHaveBeenCalled()
+  expect(axios.post.mock.calls[0][0]).toMatchInlineSnapshot(`
 Object {
   "email": "roma@gmail.com",
   "username": "maxime",
