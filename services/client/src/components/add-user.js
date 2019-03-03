@@ -2,16 +2,14 @@ import React from "react"
 import {Formik} from "formik"
 import Field from "./fields"
 
-const AddUser = ({addUser, ...rest}) => (
+const AddUser = ({addUser, isMounted, ...rest}) => (
   <Formik
-    initialValues={{email: "", username: "", password: ""}}
-    onSubmit={async (values, actions) => {
-      const {error, data} = await addUser(values)
-      actions.setSubmitting(false)
-
-      if (!error) {
+    initialValues={{email: "", username: ""}}
+    onSubmit={(values, actions) => {
+      addUser(values).then(() => {
+        actions.setSubmitting(false)
         actions.resetForm()
-      }
+      })
     }}
   >
     {({handleSubmit, isValidating, isSubmitting}) => (
@@ -30,14 +28,6 @@ const AddUser = ({addUser, ...rest}) => (
             name="email"
             placeholder="Enter a email"
             label="Email"
-          />
-        </div>
-        <div className="field">
-          <Field
-            className="input is-large"
-            name="password"
-            placeholder="Enter a password"
-            label="Password"
           />
         </div>
 
