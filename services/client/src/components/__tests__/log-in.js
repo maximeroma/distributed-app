@@ -1,8 +1,9 @@
 import React from "react"
-import {render, fireEvent, wait} from "react-testing-library"
+import {fireEvent, wait} from "react-testing-library"
 import {navigate} from "@reach/router"
 import App from "../../App"
 import {addUser, getUsers} from "../../services/users"
+import render from "testUtils"
 
 jest.mock("../../services/users", () => ({
   addUser: jest.fn(data => Promise.resolve({data})),
@@ -17,6 +18,10 @@ jest.mock("../../services/users", () => ({
   )
 }))
 
+jest.mock("services/auth", () => ({
+  login: jest.fn(data => Promise.resolve({data}))
+}))
+
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
 
 test("i can see user form correctly", async () => {
@@ -28,7 +33,7 @@ test("i can see user form correctly", async () => {
 })
 
 test("i can handle form correctly", async () => {
-  const {getByLabelText, getByText, getByTestId} = render(<App />)
+  const {getByLabelText, getByTestId, getByText} = render(<App />)
   await navigate("/login")
 
   fireEvent.change(getByLabelText(/email/i), {
@@ -44,7 +49,5 @@ test("i can handle form correctly", async () => {
 
   expect(getByTestId("login-btn")).toBeDisabled()
   await flushPromises()
-
-  expect(getByLabelText(/email/i).value).toEqual("")
-  expect(getByLabelText(/password/i).value).toEqual("")
+  await wait(() => expect(getByText(/all users/i)).toBeInTheDocument())
 })

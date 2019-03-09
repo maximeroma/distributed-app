@@ -1,8 +1,9 @@
 import React from "react"
-import {render, fireEvent, wait} from "react-testing-library"
+import {fireEvent, wait} from "react-testing-library"
 import {navigate} from "@reach/router"
 import App from "../../App"
 import {addUser, getUsers} from "../../services/users"
+import render from "testUtils"
 
 jest.mock("../../services/users", () => ({
   getUsers: jest.fn(() =>
@@ -14,6 +15,10 @@ jest.mock("../../services/users", () => ({
       }
     })
   )
+}))
+
+jest.mock("services/auth", () => ({
+  signUp: jest.fn(data => Promise.resolve(data))
 }))
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
@@ -47,8 +52,5 @@ test("i can handle form correctly", async () => {
 
   expect(getByText(/sign up/i)).toBeDisabled()
   await flushPromises()
-
-  expect(getByLabelText(/username/i).value).toEqual("")
-  expect(getByLabelText(/email/i).value).toEqual("")
-  expect(getByLabelText(/password/i).value).toEqual("")
+  await wait(() => expect(getByText(/all users/i)).toBeInTheDocument())
 })
