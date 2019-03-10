@@ -1,26 +1,14 @@
 import React from "react"
 import {fireEvent, wait} from "react-testing-library"
 import {navigate} from "@reach/router"
-import App from "../../App"
-import {addUser, getUsers} from "../../services/users"
-import render from "testUtils"
-
-jest.mock("../../services/users", () => ({
-  addUser: jest.fn(data => Promise.resolve({data})),
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
+import App from "App"
+import {render, mock} from "testUtils"
 
 jest.mock("services/auth", () => ({
   login: jest.fn(data => Promise.resolve({data}))
 }))
+
+mock.onPost("/auth/login").reply(200, {})
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
 

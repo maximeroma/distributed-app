@@ -16,7 +16,9 @@ class Home extends Component {
   getUsers = () => {
     const {getUsers} = this.props
     getUsers()
-      .then(users => this.setState({users: users.data.data.users}))
+      .then(users => {
+        this.setState({users: users.data.data.users})
+      })
       .catch(err => console.log(err))
   }
 

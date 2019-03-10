@@ -3,19 +3,7 @@ import {fireEvent, wait} from "react-testing-library"
 import {navigate} from "@reach/router"
 import App from "../../App"
 import {addUser, getUsers} from "../../services/users"
-import render from "testUtils"
-
-jest.mock("../../services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
+import {render, mock} from "testUtils"
 
 jest.mock("services/auth", () => ({
   signUp: jest.fn(data => Promise.resolve(data))

@@ -1,20 +1,8 @@
 import React from "react"
 import {render, fireEvent, wait} from "react-testing-library"
 import App from "../../App"
-import {addUser, getUsers} from "../../services/users"
-
-jest.mock("../../services/users", () => ({
-  addUser: jest.fn(data => Promise.resolve({data})),
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
+import * as users from "services/users"
+import "testUtils"
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
 
@@ -26,6 +14,7 @@ test("i can see user form correctly", () => {
 })
 
 test("i can handle form correctly", async () => {
+  jest.spyOn(users, "addUser")
   const {getByLabelText, getByText, debug} = render(<App />)
 
   fireEvent.change(getByLabelText(/username/i), {
@@ -41,8 +30,8 @@ test("i can handle form correctly", async () => {
 
   expect(getByText(/submit/i)).toBeDisabled()
   await flushPromises()
-  expect(addUser).toHaveBeenCalled()
-  expect(addUser.mock.calls[0][0]).toMatchInlineSnapshot(`
+  expect(users.addUser).toHaveBeenCalled()
+  expect(users.addUser.mock.calls[0][0]).toMatchInlineSnapshot(`
 Object {
   "email": "roma@gmail.com",
   "username": "maxime",

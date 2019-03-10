@@ -1,19 +1,8 @@
 import React from "react"
 import {Router, navigate} from "@reach/router"
 import {render} from "react-testing-library"
+import "testUtils"
 import App from "App"
-
-jest.mock("services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
 
 test("by default i am on the home page", async () => {
   const {getByText} = render(<App />)

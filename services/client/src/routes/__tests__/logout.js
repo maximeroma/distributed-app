@@ -1,19 +1,7 @@
 import React from "react"
-import render from "testUtils"
 import {wait, fireEvent} from "react-testing-library"
 import App from "App"
-
-jest.mock("services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
+import {render} from "testUtils"
 
 test("i am redirect to login page after visited logout path", async () => {
   const {getByText} = render(<App />)
