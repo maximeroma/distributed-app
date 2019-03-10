@@ -5,55 +5,27 @@ import About from "routes/about"
 import Logout from "routes/logout"
 import NavBar from "components/navbar"
 import Login from "routes/log-in"
+import UserStatus from "routes/status"
 import Register from "routes/register"
 import {signUp, login} from "services/auth"
+import {AuthProvider} from "hooks/auth"
 import "./App.css"
 
-export default class extends Component {
-  state = {
-    isAuthenticated: false
-  }
-
-  handleSignup = data => {
-    this.setState({isAuthenticated: true})
-    return signUp(data)
-  }
-
-  handleLogin = data => {
-    return login(data)
-  }
-
-  setIsAuthenticated = isAuthenticated => {
-    this.setState(() => ({isAuthenticated}))
-  }
-
-  render() {
-    return (
-      <div>
+export default () => {
+  return (
+    <div>
+      <AuthProvider>
         <Router>
           <NavBar path="/">
             <Home path="/" />
             <About path="about" />
-            <Register
-              path="/register"
-              signUp={signUp}
-              isAuthenticated={this.state.isAuthenticated}
-              setIsAuthenticated={this.setIsAuthenticated}
-            />
-            <Login
-              path="/login"
-              login={login}
-              isAuthenticated={this.state.isAuthenticated}
-              setIsAuthenticated={this.setIsAuthenticated}
-            />
-            <Logout
-              path="/logout"
-              isAuthenticated={this.state.isAuthenticated}
-              setIsAuthenticated={this.setIsAuthenticated}
-            />
+            <Register path="/register" signUp={signUp} />
+            <UserStatus path="/status" />
+            <Login path="/login" login={login} />
+            <Logout path="/logout" />
           </NavBar>
         </Router>
-      </div>
-    )
-  }
+      </AuthProvider>
+    </div>
+  )
 }

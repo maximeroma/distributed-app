@@ -1,13 +1,13 @@
-import React, {Component} from "react"
+import React, {useEffect} from "react"
 import {Redirect} from "@reach/router"
+import {useAuth} from "hooks/auth"
 
-export default class extends Component {
-  componentDidMount() {
+export default () => {
+  const {setIsAuthenticated} = useAuth()
+  useEffect(() => {
     window.localStorage.clear()
-    this.props.setIsAuthenticated(false)
-  }
+    setIsAuthenticated(false)
+  }, [])
 
-  render() {
-    return <Redirect to="/login" noThrow />
-  }
+  return <Redirect to="/login" noThrow />
 }

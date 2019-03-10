@@ -1,8 +1,10 @@
-import React, {Fragment, useState, useReducer} from "react"
+import React, {Fragment, useState} from "react"
 import {Link} from "@reach/router"
+import {useAuth} from "hooks/auth"
 
 const Navbar = ({children}) => {
   const [isActive, setIsActive] = useState(false)
+  const {isAuthenticated} = useAuth()
 
   const navTgl = ["nav-toggle", "navbar-burger", isActive ? "is-active" : ""]
     .filter(Boolean)
@@ -39,20 +41,27 @@ const Navbar = ({children}) => {
               <Link to="/about" className="navbar-item">
                 About
               </Link>
-              <Link to="/status" className="navbar-item">
-                User Status
-              </Link>
+              {isAuthenticated && (
+                <Link to="/status" className="navbar-item">
+                  User Status
+                </Link>
+              )}
             </div>
             <div className="navbar-end">
-              <Link to="/register" className="navbar-item">
-                Register
-              </Link>
-              <Link to="/login" className="navbar-item">
-                Log In
-              </Link>
-              <Link to="/logout" className="navbar-item">
-                Log out
-              </Link>
+              {isAuthenticated ? (
+                <Link to="/logout" className="navbar-item">
+                  Log out
+                </Link>
+              ) : (
+                <Fragment>
+                  <Link to="/register" className="navbar-item">
+                    Register
+                  </Link>
+                  <Link to="/login" className="navbar-item">
+                    Log In
+                  </Link>
+                </Fragment>
+              )}
             </div>
           </div>
         </section>

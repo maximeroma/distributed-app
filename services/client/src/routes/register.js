@@ -2,8 +2,11 @@ import React, {Fragment} from "react"
 import {Formik} from "formik"
 import Field from "components/fields"
 import {Redirect} from "@reach/router"
+import {useAuth} from "hooks/auth"
 
-const Register = ({signUp, isAuthenticated, setIsAuthenticated, ...rest}) => {
+const Register = ({signUp, ...rest}) => {
+  const {isAuthenticated, setIsAuthenticated} = useAuth()
+
   if (isAuthenticated) {
     return <Redirect to="/" noThrow />
   }

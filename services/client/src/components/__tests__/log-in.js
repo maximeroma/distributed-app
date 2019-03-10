@@ -1,5 +1,5 @@
 import React from "react"
-import {fireEvent, wait} from "react-testing-library"
+import {fireEvent, wait, act} from "react-testing-library"
 import {navigate} from "@reach/router"
 import App from "App"
 import {render, mock} from "testUtils"
@@ -34,8 +34,7 @@ test("i can handle form correctly", async () => {
   expect(getByTestId("login-btn")).not.toBeDisabled()
 
   fireEvent.submit(getByTestId("login-btn"))
-
-  expect(getByTestId("login-btn")).toBeDisabled()
   await flushPromises()
+
   await wait(() => expect(getByText(/all users/i)).toBeInTheDocument())
 })
