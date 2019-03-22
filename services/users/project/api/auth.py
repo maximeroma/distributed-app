@@ -119,6 +119,3 @@ def get_user_status():
         return jsonify(response_object), 401
     else:
         return jsonify(response_object), 401
-
-
-

@@ -190,13 +190,14 @@ class TestAuthBlueprint(BaseTestCase):
                 'email': 'test@test.com',
                 'password': 'test'
             }), content_type='application/json')
-            token=json.loads(resp_login.data.decode())['auth_token']
-            response=self.client.get(
+            token = json.loads(resp_login.data.decode())['auth_token']
+            response = self.client.get(
                 '/auth/logout',
                 headers={'Authorization': f'Bearer {token}'}
             )
-            data=json.loads(response.data.decode())
-            self.assertEqual(data, {'status': 'fail', 'message': 'Provide a valid auth token.'})
+            data = json.loads(response.data.decode())
+            self.assertEqual(data, {'status': 'fail',
+                                    'message': 'Provide a valid auth token.'})
             self.assertEqual(response.status_code, 401)
 
     def test_user_satus(self):

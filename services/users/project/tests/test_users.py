@@ -1,6 +1,5 @@
 import json
 import unittest
-import pytest
 
 from project.tests.base import BaseTestCase
 from project.tests.utils import add_user
@@ -64,9 +63,9 @@ def test_add_user_invalid_json_keys_no_password(add_user_logged, client):
     response = client.post(
         '/users',
         data=json.dumps(dict({
-                'email': 'michael@mherman',
-                'username': 'michael'
-            })
+            'email': 'michael@mherman',
+            'username': 'michael'
+        })
         ),
         content_type='application/json',
         headers={'Authorization': f'Bearer {token}'}
@@ -102,7 +101,8 @@ def test_add_user_duplicate_email(add_user_logged, client):
     data = json.loads(response.data.decode())
 
     assert response.status_code == 400
-    assert data == {'message': 'Sorry. That email already exists.', 'status': 'fail'}
+    assert data == {'message': 'Sorry. That email already exists.',
+                    'status': 'fail'}
 
 
 class TestUserService(BaseTestCase):
@@ -114,8 +114,6 @@ class TestUserService(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('pong!', data['message'])
         self.assertIn('success', data['status'])
-
-
 
     def test_get_single_user(self):
         user = add_user('michael', 'michael@mherman.org', 'test')
@@ -212,7 +210,8 @@ class TestUserService(BaseTestCase):
         with self.client:
             resp_login = self.client.post(
                 '/auth/login',
-                data=json.dumps({'email': 'test1@test.com', 'password': 'test1'}),
+                data=json.dumps({'email': 'test1@test.com',
+                                 'password': 'test1'}),
                 content_type='application/json',
             )
             token = json.loads(resp_login.data.decode())['auth_token']
@@ -227,7 +226,8 @@ class TestUserService(BaseTestCase):
                 headers={'Authorization': f'Bearer {token}'}
             )
             data = json.loads(response.data.decode())
-            self.assertEqual(data, {'status': 'fail', 'message': 'Provide a valid auth token.'})
+            self.assertEqual(data, {'status': 'fail',
+                                    'message': 'Provide a valid auth token.'})
             self.assertEqual(response.status_code, 401)
 
 
