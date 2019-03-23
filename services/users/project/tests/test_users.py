@@ -7,8 +7,8 @@ from project.api.models import User
 from project import db
 
 
-def test_add_user(add_user_logged, client):
-    token = add_user_logged['return_token']
+def test_add_user(add_admin_logged, client):
+    token = add_admin_logged['token']
     response = client.post(
         '/users',
         data=json.dumps({
@@ -26,8 +26,8 @@ def test_add_user(add_user_logged, client):
     assert 'success' == data['status']
 
 
-def test_add_user_invalid_json_keys_empty_object(add_user_logged, client):
-    token = add_user_logged['return_token']
+def test_add_user_invalid_json_keys_empty_object(add_admin_logged, client):
+    token = add_admin_logged['token']
 
     response = client.post(
         '/users',
@@ -41,8 +41,8 @@ def test_add_user_invalid_json_keys_empty_object(add_user_logged, client):
     assert data == {'message': 'Invalid payload.', 'status': 'fail'}
 
 
-def test_add_user_invalid_json_keys_no_username(add_user_logged, client):
-    token = add_user_logged['return_token']
+def test_add_user_invalid_json_keys_no_username(add_admin_logged, client):
+    token = add_admin_logged['token']
     response = client.post(
         '/users',
         data=json.dumps(dict({
@@ -58,8 +58,8 @@ def test_add_user_invalid_json_keys_no_username(add_user_logged, client):
     assert data == {'message': 'Invalid payload.', 'status': 'fail'}
 
 
-def test_add_user_invalid_json_keys_no_password(add_user_logged, client):
-    token = add_user_logged['return_token']
+def test_add_user_invalid_json_keys_no_password(add_admin_logged, client):
+    token = add_admin_logged['token']
     response = client.post(
         '/users',
         data=json.dumps(dict({
@@ -76,8 +76,8 @@ def test_add_user_invalid_json_keys_no_password(add_user_logged, client):
     assert data == {'message': 'Invalid payload.', 'status': 'fail'}
 
 
-def test_add_user_duplicate_email(add_user_logged, client):
-    token = add_user_logged['return_token']
+def test_add_user_duplicate_email(add_admin_logged, client):
+    token = add_admin_logged['token']
     client.post(
         '/users',
         data=json.dumps({
@@ -103,6 +103,26 @@ def test_add_user_duplicate_email(add_user_logged, client):
     assert response.status_code == 400
     assert data == {'message': 'Sorry. That email already exists.',
                     'status': 'fail'}
+
+
+def test_add_user_not_admin(client, db_init):
+    add_user('test1', 'test1@test1.com', 'test1')
+    resp_login = client.post('/auth/login',
+                             data=json.dumps({'email': 'test1@test1.com',
+                                              'password': 'test1'}),
+                             content_type='application/json')
+    token = json.loads(resp_login.data.decode())['auth_token']
+    response = client.post('/users',
+                           data=json.dumps({'username': 'michael',
+                                            'email': 'michael@sonotreal.com',
+                                            'password': 'test'}),
+                           content_type='application/json',
+                           headers={'Authorization': f'Bearer {token}'}
+                           )
+    data = json.loads(response.data.decode())
+    assert data == {'status': 'fail',
+                    'message': 'You do not have permission to do that.'}
+    assert response.status_code == 401
 
 
 class TestUserService(BaseTestCase):
@@ -192,8 +212,10 @@ class TestUserService(BaseTestCase):
     def test_main_add_user(self):
         with self.client:
             response = self.client.post(
-                '/', data=dict(username="michael",
-                               email="michael@sonotreal.com", password='test'),
+                '/',
+                data=dict(username="michael",
+                          email="michael@sonotreal.com",
+                          password='test'),
                 follow_redirects=True
             )
 
@@ -203,15 +225,15 @@ class TestUserService(BaseTestCase):
             self.assertIn(b'michael', response.data)
 
     def test_add_user_inactive(self):
-        add_user('test1', 'test1@test.com', 'test1')
-        user = User.query.filter_by(email='test1@test.com').first()
+        add_user('test2', 'test2@test.com', 'test2')
+        user = User.query.filter_by(email='test2@test.com').first()
         user.active = False
         db.session.commit()
         with self.client:
             resp_login = self.client.post(
                 '/auth/login',
-                data=json.dumps({'email': 'test1@test.com',
-                                 'password': 'test1'}),
+                data=json.dumps({'email': 'test2@test.com',
+                                 'password': 'test2'}),
                 content_type='application/json',
             )
             token = json.loads(resp_login.data.decode())['auth_token']
@@ -226,8 +248,9 @@ class TestUserService(BaseTestCase):
                 headers={'Authorization': f'Bearer {token}'}
             )
             data = json.loads(response.data.decode())
-            self.assertEqual(data, {'status': 'fail',
-                                    'message': 'Provide a valid auth token.'})
+            self.assertEqual(data,
+                             {'status': 'fail',
+                              'message': 'Provide a valid auth token.'})
             self.assertEqual(response.status_code, 401)
 
 

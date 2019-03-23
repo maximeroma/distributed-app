@@ -16,13 +16,15 @@ class User(db.Model):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
+    admin = db.Column(db.Boolean, default=False, nullable=False)
 
     def to_json(self):
         return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
-            'active': self.active
+            'active': self.active,
+            'admin': self.admin
         }
 
     @staticmethod
@@ -60,9 +62,10 @@ class User(db.Model):
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, admin=False):
         self.username = username
         self.email = email
+        self.admin = admin
         self.password = bcrypt.generate_password_hash(
             password,
             current_app.config.get('BCRYPT_LOG_ROUNDS')

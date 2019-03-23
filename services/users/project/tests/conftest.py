@@ -2,6 +2,7 @@ import pytest
 import json
 from project import create_app, db
 from project.tests.utils import add_user
+from project.api.models import User
 
 
 @pytest.fixture(scope='module')
@@ -36,6 +37,20 @@ def new_user(client, db_init):
 
 
 @pytest.fixture(scope='module')
+def add_admin_user(client, db_init):
+    user = User(
+        username="admin",
+        email="admin@admin.com",
+        password="admin",
+        admin=True
+    )
+    db.session.add(user)
+    db.session.commit()
+
+    yield {'db': db, 'user': user}
+
+
+@pytest.fixture(scope='module')
 def add_user_logged(client, new_user):
     resp_login = client.post(
         '/auth/login',
@@ -48,3 +63,18 @@ def add_user_logged(client, new_user):
     token = json.loads(resp_login.data.decode())['auth_token']
 
     yield {'return_token': token}
+
+
+@pytest.fixture(scope='module')
+def add_admin_logged(client, add_admin_user):
+    resp_login = client.post(
+        '/auth/login',
+        data=json.dumps({
+            'email': 'admin@admin.com',
+            'password': 'admin'
+        }),
+        content_type='application/json'
+    )
+    token = json.loads(resp_login.data.decode())['auth_token']
+
+    yield {'token': token}

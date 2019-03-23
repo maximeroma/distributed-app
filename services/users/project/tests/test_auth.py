@@ -200,7 +200,7 @@ class TestAuthBlueprint(BaseTestCase):
                                     'message': 'Provide a valid auth token.'})
             self.assertEqual(response.status_code, 401)
 
-    def test_user_satus(self):
+    def test_user_status(self):
         add_user('test', 'test@test.com', 'test')
         with self.client:
             resp_login = self.client.post(
@@ -223,6 +223,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertEqual(data['data'],
                              {'username': 'test',
                               'email': 'test@test.com',
+                              'admin': False,
                               'active': True, 'id': 1})
             self.assertEqual(response.status_code, 200)
 
