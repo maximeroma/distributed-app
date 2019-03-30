@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import {getUsers, addUser} from "services/users"
-import AddUser from "components/add-user"
 
 import UsersList from "components/users-list"
 
@@ -36,8 +35,6 @@ class Home extends Component {
         <div className="container">
           <div className="columns">
             <div className="column is-one-third">
-              <br />
-              <AddUser addUser={this.addUser} />
               <br />
               <UsersList users={this.state.users} />
               <hr />

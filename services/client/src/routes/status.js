@@ -7,6 +7,8 @@ const UserStatus = () => {
   const [email, setEmail] = useState("")
   const [id, setId] = useState("")
   const [username, setUsername] = useState("")
+  const [active, setActive] = useState("")
+  const [admin, setAdmin] = useState("")
   const {isAuthenticated} = useAuth()
 
   if (!isAuthenticated) {
@@ -18,6 +20,8 @@ const UserStatus = () => {
       setEmail(res.email)
       setId(res.id)
       setUsername(res.username)
+      setActive(res.active)
+      setAdmin(res.admin)
     })
   }, [])
 
@@ -35,6 +39,14 @@ const UserStatus = () => {
         <li>
           <strong>Username:</strong>
           {username}
+        </li>
+        <li>
+          <strong>Active:</strong>
+          {active}
+        </li>
+        <li>
+          <strong>Admin:</strong>
+          {admin}
         </li>
       </ul>
     </div>
