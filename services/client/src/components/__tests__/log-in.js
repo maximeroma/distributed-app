@@ -4,11 +4,24 @@ import {navigate} from "@reach/router"
 import App from "App"
 import {render, mock} from "testUtils"
 
-jest.mock("services/auth", () => ({
-  login: jest.fn(data => Promise.resolve({data}))
-}))
+mock.onPost(`/auth/login`).reply(201, {auth_token: "Bearer test"})
 
-mock.onPost("/auth/login").reply(200, {})
+const users = [
+  {
+    active: true,
+    email: "hermanmu@gmail.com",
+    id: 1,
+    username: "michael"
+  },
+  {
+    active: true,
+    email: "michael@mherman.org",
+    id: 2,
+    username: "michaelherman"
+  }
+]
+
+mock.onGet(`/users`).reply(200, {data: {users}})
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
 
@@ -21,7 +34,7 @@ test("i can see user form correctly", async () => {
 })
 
 test("i can handle form correctly", async () => {
-  const {getByLabelText, getByTestId, getByText} = render(<App />)
+  const {getByLabelText, getByTestId, getByText, debug} = render(<App />)
   await navigate("/login")
 
   fireEvent.change(getByLabelText(/email/i), {

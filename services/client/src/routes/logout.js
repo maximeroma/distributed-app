@@ -3,10 +3,9 @@ import {Redirect} from "@reach/router"
 import {useAuth} from "hooks/auth"
 
 export default () => {
-  const {setIsAuthenticated} = useAuth()
+  const {logout} = useAuth()
   useEffect(() => {
-    window.localStorage.clear()
-    setIsAuthenticated(false)
+    logout()
   }, [])
 
   return <Redirect to="/login" noThrow />
