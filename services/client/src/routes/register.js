@@ -4,12 +4,8 @@ import Field from "components/fields"
 import {Redirect} from "@reach/router"
 import {useAuth} from "hooks/auth"
 
-const Register = ({signUp, ...rest}) => {
-  const {isAuthenticated, setIsAuthenticated} = useAuth()
-
-  if (isAuthenticated) {
-    return <Redirect to="/" noThrow />
-  }
+const Register = ({navigate, ...rest}) => {
+  const {signUp} = useAuth()
 
   return (
     <Fragment>
@@ -17,10 +13,9 @@ const Register = ({signUp, ...rest}) => {
       <Formik
         initialValues={{email: "", username: "", password: ""}}
         onSubmit={(values, actions) => {
-          signUp(values)
+          const promise = signUp(values)
             .then(data => {
-              window.localStorage.setItem("authToken", data.auth_token)
-              setIsAuthenticated(true)
+              navigate("/")
             })
             .catch(err => actions.setSubmitting(false))
         }}

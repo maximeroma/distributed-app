@@ -5,7 +5,7 @@ import {render} from "testUtils"
 import {AuthProvider, useAuth} from "hooks/auth"
 
 test("i see only logout button when i am logged", async () => {
-  const {getByText, queryByText} = setup({isAuthenticated: true})
+  const {getByText, queryByText} = setup({authToken: "Bearer"})
 
   fireEvent.click(getByText(/log out/i))
 
@@ -15,7 +15,7 @@ test("i see only logout button when i am logged", async () => {
 })
 
 test("i see only login and register buttons when i am not logged", async () => {
-  const {getByText, queryByText} = setup({isAuthenticated: false})
+  const {getByText, queryByText} = setup()
 
   fireEvent.click(getByText(/log in/i))
 
@@ -24,15 +24,10 @@ test("i see only login and register buttons when i am not logged", async () => {
   expect(queryByText(/log in/i)).toBeInTheDocument()
 })
 
-const Usage = ({isAuthenticated}) => {
-  const {setIsAuthenticated} = useAuth()
-  setIsAuthenticated(isAuthenticated)
+const Usage = ({authToken = null}) => {
+  const {setAuthToken} = useAuth()
+  setAuthToken(authToken)
   return <NavBar />
 }
 
-const setup = ({...rest}) =>
-  render(
-    <AuthProvider>
-      <Usage {...rest} />
-    </AuthProvider>
-  )
+const setup = ({...rest}) => render(<Usage {...rest} />)

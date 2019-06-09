@@ -5,9 +5,23 @@ import App from "../../App"
 import {addUser, getUsers} from "../../services/users"
 import {render, mock} from "testUtils"
 
-jest.mock("services/auth", () => ({
-  signUp: jest.fn(data => Promise.resolve(data))
-}))
+mock.onPost("/auth/register").reply(200, {auth_token: "Bearer test"})
+const users = [
+  {
+    active: true,
+    email: "hermanmu@gmail.com",
+    id: 1,
+    username: "michael"
+  },
+  {
+    active: true,
+    email: "michael@mherman.org",
+    id: 2,
+    username: "michaelherman"
+  }
+]
+
+mock.onGet(`/users`).reply(200, {data: {users}})
 
 const flushPromises = async () => new Promise(resolve => setImmediate(resolve))
 
