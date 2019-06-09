@@ -44,11 +44,19 @@ cases(
     await wait(() => expect(getByText(opts.page)).toBeInTheDocument())
   },
   [
-    // {link: /about/i, page: /about page/i},
-    // {link: /home/i, page: /all users/i},
     {link: /register/i, page: /register page/i},
     {link: /log in/i, page: /login page/i}
   ]
+)
+
+cases(
+  "i navigate correctly on authenticated app",
+  async opts => {
+    const {getByText} = setup()
+    fireEvent.click(getByText(opts.link))
+    await wait(() => expect(getByText(opts.page)).toBeInTheDocument())
+  },
+  [{link: /about/i, page: /about page/i}, {link: /home/i, page: /all users/i}]
 )
 
 test("i can handle burger button", async () => {

@@ -13,7 +13,7 @@ const Register = ({navigate, ...rest}) => {
       <Formik
         initialValues={{email: "", username: "", password: ""}}
         onSubmit={(values, actions) => {
-          const promise = signUp(values)
+          signUp(values)
             .then(data => {
               navigate("/")
             })
