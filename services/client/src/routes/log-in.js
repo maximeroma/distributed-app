@@ -4,11 +4,8 @@ import Field from "components/fields"
 import {Redirect} from "@reach/router"
 import {useAuth} from "hooks/auth"
 
-const LogIn = ({login, ...rest}) => {
-  const {isAuthenticated, setIsAuthenticated} = useAuth()
-  if (isAuthenticated) {
-    return <Redirect to="/" noThrow />
-  }
+const LogIn = ({navigate, ...rest}) => {
+  const {login} = useAuth()
 
   return (
     <Fragment>
@@ -18,8 +15,7 @@ const LogIn = ({login, ...rest}) => {
         onSubmit={(values, actions) => {
           login(values)
             .then(data => {
-              window.localStorage.setItem("authToken", data.auth_token)
-              setIsAuthenticated(true)
+              navigate("/")
             })
             .catch(err => actions.setSubmitting(false))
         }}
