@@ -1,21 +1,22 @@
 import graphene
 from graphene_sqlalchemy import (
     SQLAlchemyObjectType,
-    SQLAlchemyConnectionField
+    SQLAlchemyConnectionField,
 )
 from project.api.models import User as UserModel
-from project.api.utils import authenticate, is_admin
 from project import db
+
 
 class User(SQLAlchemyObjectType):
     class Meta:
         model = UserModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
 
 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
     all_users = SQLAlchemyConnectionField(User)
+
 
 class CreateUser(graphene.Mutation):
     class Arguments:
@@ -37,10 +38,8 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user=user)
 
 
-
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
 
+
 schema = graphene.Schema(query=Query, mutation=Mutation)
-
-
