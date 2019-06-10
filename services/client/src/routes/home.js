@@ -23,6 +23,7 @@ const ALL_USERS = gql`
 
 const Home = () => {
   const {data, loading, error} = useQuery(ALL_USERS)
+
   if (error) {
     return <div>Error</div>
   }
