@@ -1,28 +1,14 @@
-import React, {Component} from "react"
-import {getUsers, addUser} from "services/users"
-import gql from "graphql-tag"
+import React, {useEffect} from "react"
 import {useQuery} from "react-apollo-hooks"
-
+import {ALL_USERS} from "graphql/queries"
 import UsersList from "components/users-list"
 
-const ALL_USERS = gql`
-  {
-    allUsers {
-      edges {
-        node {
-          id
-          email
-          username
-          active
-          admin
-        }
-      }
-    }
-  }
-`
-
 const Home = () => {
-  const {data, loading, error} = useQuery(ALL_USERS)
+  const {data, loading, error, refetch} = useQuery(ALL_USERS)
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   if (error) {
     return <div>Error</div>
