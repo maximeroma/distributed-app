@@ -4,24 +4,13 @@ import {navigate} from "@reach/router"
 import cases from "jest-in-case"
 import App from "../../App"
 import {useAuth} from "../../hooks/auth"
-import {addUser, getUsers} from "../../services/users"
-import {render} from "testUtils"
+import {render, mock} from "testUtils"
 
-jest.mock("../../services/users", () => ({
-  getUsers: jest.fn(() =>
-    Promise.resolve({
-      data: {
-        data: {
-          users: []
-        }
-      }
-    })
-  )
-}))
+mock.onGet("/graphql").reply(200, {data: {allUsers: {edges: []}}})
 
-test("i am on the main page by default", () => {
+test("i am on the main page by default", async () => {
   const {getByText} = setup()
-
+  await wait()
   expect(getByText(/all users/i)).toBeInTheDocument()
 })
 

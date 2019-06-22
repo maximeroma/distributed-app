@@ -1,12 +1,12 @@
 import os
 
-from flask import Flask  # new
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
-
+from flask_graphql import GraphQLView
 
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
@@ -16,7 +16,6 @@ bcrypt = Bcrypt()
 
 
 def create_app(script_info=None):
-
     app = Flask(__name__)
 
     app_settings = os.getenv('APP_SETTINGS')
@@ -33,6 +32,16 @@ def create_app(script_info=None):
     app.register_blueprint(users_blueprint)
     from project.api.auth import auth_blueprint
     app.register_blueprint(auth_blueprint)
+
+    from project.api.schemas import schema
+    app.add_url_rule(
+        '/graphql',
+        view_func=GraphQLView.as_view(
+            'graphql',
+            schema=schema,
+            graphiql=True
+        )
+    )
 
     # shell context for flask cli
     @app.shell_context_processor
