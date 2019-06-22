@@ -15,7 +15,7 @@ export default ({users}) => (
       </thead>
       <tbody>
         {Array.isArray(users) &&
-          users.map(user => {
+          users.map(({node: user}) => {
             return (
               <tr key={user.id}>
                 <td>{user.id}</td>

@@ -1,50 +1,37 @@
-import React, {Component} from "react"
-import {getUsers, addUser} from "services/users"
-
+import React, {useEffect} from "react"
+import {useQuery} from "react-apollo-hooks"
+import {ALL_USERS} from "graphql/queries"
 import UsersList from "components/users-list"
 
-class Home extends Component {
-  static defaultProps = {getUsers, addUser}
+const Home = () => {
+  const {data, loading, error, refetch} = useQuery(ALL_USERS)
 
-  state = {users: []}
+  useEffect(() => {
+    refetch()
+  }, [])
 
-  componentDidMount() {
-    this.getUsers()
+  if (error) {
+    return <div>Error</div>
   }
 
-  getUsers = () => {
-    const {getUsers} = this.props
-    getUsers()
-      .then(users => {
-        this.setState({users: users.data.data.users})
-      })
-      .catch(err => console.log(err))
+  if (loading) {
+    return <div>Loading</div>
   }
 
-  addUser = ({username = "", email = ""}) => {
-    return addUser({username, email})
-      .then(res => {
-        this.getUsers()
-      })
-      .catch(err => console.log(err))
-  }
-
-  render() {
-    return (
-      <section className="section">
-        <div className="container">
-          <div className="columns">
-            <div className="column is-one-third">
-              <br />
-              <UsersList users={this.state.users} />
-              <hr />
-              <br />
-            </div>
+  return (
+    <section className="section">
+      <div className="container">
+        <div className="columns">
+          <div className="column is-one-third">
+            <br />
+            <UsersList users={data.allUsers.edges} />
+            <hr />
+            <br />
           </div>
         </div>
-      </section>
-    )
-  }
+      </div>
+    </section>
+  )
 }
 
 export default Home

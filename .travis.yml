@@ -1,12 +1,10 @@
 sudo: required
 
-language: python
-
 services:
   - docker
 
 env:
-  DOCKER_COMPOSE_VERSION: 1.23.1
+  DOCKER_COMPOSE_VERSION: 1.23.2
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -16,13 +14,6 @@ before_install:
 
 before_script:
   - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-  - docker-compose -f docker-compose-dev.yml up -d --build
-  - sleep 5
 
 script:
-  - docker-compose -f docker-compose-dev.yml exec users python manage.py recreate-db
-  - docker-compose -f docker-compose-dev.yml exec users python manage.py test
-  - docker-compose -f docker-compose-dev.yml exec users flake8 project
-
-after_script:
-  - docker-compose -f docker-compose-dev.yml down
+  - bash scripts/test.sh
