@@ -4,7 +4,7 @@ import {useAuth} from "hooks/auth"
 
 const Navbar = ({children}) => {
   const [isActive, setIsActive] = useState(false)
-  const {isAuthenticated} = useAuth()
+  const {data} = useAuth()
 
   const navTgl = ["nav-toggle", "navbar-burger", isActive ? "is-active" : ""]
     .filter(Boolean)
@@ -41,14 +41,14 @@ const Navbar = ({children}) => {
               <Link to="/about" className="navbar-item">
                 About
               </Link>
-              {isAuthenticated && (
+              {data && (
                 <Link to="/status" className="navbar-item">
                   User Status
                 </Link>
               )}
             </div>
             <div className="navbar-end">
-              {isAuthenticated ? (
+              {data ? (
                 <Link to="/logout" className="navbar-item">
                   Log out
                 </Link>
