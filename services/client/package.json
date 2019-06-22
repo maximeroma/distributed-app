@@ -43,6 +43,7 @@
     "build": "react-scripts build",
     "test": "NODE_PATH=src/ REACT_APP_USERS_SERVICE_URL= react-scripts test",
     "test:cov": "NODE_PATH=src/ REACT_APP_USERS_SERVICE_URL= react-scripts test --coverage",
+    "test:debug": "NODE_PATH=src/ REACT_APP_USERS_SERVICE_URL= react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
