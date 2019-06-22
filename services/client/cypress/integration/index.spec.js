@@ -19,5 +19,7 @@ describe("index", () => {
       .type("azerty")
       .getByText(/sign up/i)
       .click()
+    cy.getByText(/all users/i).should("be.visible")
+    cy.location("pathname").should("eq", "/")
   })
 })
