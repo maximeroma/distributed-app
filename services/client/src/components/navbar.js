@@ -26,6 +26,7 @@ const Navbar = ({children}) => {
             <strong className="navbar-item">Distributed app</strong>
             <span
               className={navTgl}
+              data-testid="burger-btn"
               onClick={() => setIsActive(isActive => !isActive)}
             >
               <span />

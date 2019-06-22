@@ -1,5 +1,5 @@
 import React from "react"
-import {wait, fireEvent} from "react-testing-library"
+import {wait, fireEvent} from "@testing-library/react"
 import NavBar from "components/navbar"
 import {render} from "testUtils"
 import {AuthProvider, useAuth} from "hooks/auth"

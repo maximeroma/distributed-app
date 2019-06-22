@@ -1,5 +1,5 @@
 import React from "react"
-import {render as renderRTl} from "react-testing-library"
+import {render as renderRTl} from "@testing-library/react"
 import axios from "axios"
 import AppProvider from "AppProvider"
 import MockAdapter from "axios-mock-adapter"

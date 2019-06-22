@@ -1,5 +1,5 @@
 import React from "react"
-import {fireEvent, wait, act} from "react-testing-library"
+import {fireEvent, wait, act} from "@testing-library/react"
 import {navigate} from "@reach/router"
 import App from "App"
 import {render, mock} from "testUtils"

@@ -1,0 +1,23 @@
+describe("index", () => {
+  it('users redirect to "/login" when they are not authenticated', () => {
+    cy.visit("/")
+      .queryByText(/distributed app/i)
+      .location("pathname")
+      .should("eq", "/login")
+  })
+  it("user can register onSubmit", () => {
+    cy.visit("/")
+    cy.getByTestId("burger-btn")
+      .click()
+      .getByText(/register/i)
+      .click()
+    cy.getByLabelText(/username/i)
+      .type("tester")
+      .getByLabelText(/email/i)
+      .type("tester@gmail.com")
+      .getByLabelText(/password/i)
+      .type("azerty")
+      .getByText(/sign up/i)
+      .click()
+  })
+})

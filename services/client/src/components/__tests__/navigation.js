@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {fireEvent, wait} from "react-testing-library"
+import {fireEvent, wait} from "@testing-library/react"
 import {navigate} from "@reach/router"
 import cases from "jest-in-case"
 import App from "../../App"
