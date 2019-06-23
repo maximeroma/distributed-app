@@ -11,7 +11,8 @@ mock.onGet("/graphql").reply(200, {data: {allUsers: {edges: []}}})
 test("i am on the main page by default", async () => {
   const {getByText} = setup()
   await wait()
-  expect(getByText(/all users/i)).toBeInTheDocument()
+  debugger
+  expect(getByText(/distributed app/i)).toBeInTheDocument()
 })
 
 test("i go to the about page when i click on about link", async () => {

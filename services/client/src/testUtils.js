@@ -51,7 +51,7 @@ const createClient = ({overrides = []} = {}) => {
   })
 }
 
-export * from "react-testing-library"
+export * from "@testing-library/react"
 
 export const render = ui => {
   const client = createClient()
